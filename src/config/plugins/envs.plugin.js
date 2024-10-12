@@ -11,6 +11,4 @@ export const envsPlugin = {
   JWT_EXPIRATION: env.get('JWT_EXPIRATION').required().asString(),
   USER_GET_TOKEN: env.get('USER_GET_TOKEN').required().asString(),
   PASS_GET_TOKEN: env.get('PASS_GET_TOKEN').required().asString(),
-  IMAGGA_API_TOKEN: env.get('IMAGGA_API_TOKEN').required().asString(),
-  OPENAI_KEY: env.get('OPENAI_KEY').required().asString(),
 }
