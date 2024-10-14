@@ -24,22 +24,30 @@ export class CloudinaryService {
     });
   }
 
-  getMaskImages({public_id}) {
+  getMaskImages({public_id, change_bg}) {
     return masks.map(mask => {
-      const faceImg = cloudinary.image(public_id, {
-        effect: `gen_background_replace:prompt_an ${halloweenPrompts[Math.floor(Math.random() * halloweenPrompts.length)]}`,
+
+      const changeBgPrompt = `gen_background_replace:prompt_an ${halloweenPrompts[Math.floor(Math.random() * halloweenPrompts.length)]}`;
+
+      const config = {
         transformation: [
           {overlay: mask.public_id},
           {flags: "region_relative", width: mask.width, crop: "scale"},
           {flags: "layer_apply", gravity: "faces"},
           {fetch_format: "auto", quality: "auto"}
         ]
-      });
+      }
+
+      if (change_bg) {
+        config.effect = changeBgPrompt;
+      }
+
+      const faceImg = cloudinary.image(public_id, config);
       return faceImg.match(/<img[^>]+src=['"]([^'"]+)['"]/)?.[1]
     });
   }
 
-  async uploadImage({file}) {
+  async uploadImage({file, change_bg}) {
     const {secure_url, public_id} = await cloudinary.uploader.upload(file.tempFilePath, {
       folder: 'halloween-hackathon',
     });
@@ -47,7 +55,7 @@ export class CloudinaryService {
     return {
       secure_url,
       public_id,
-      face_masks: this.getMaskImages({public_id}),
+      face_masks: this.getMaskImages({public_id, change_bg}),
     }
   }
 }
