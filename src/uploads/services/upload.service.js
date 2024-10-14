@@ -9,6 +9,7 @@ export class UploadService {
 
   async uploadImage({
     file,
+    change_bg = false,
     validExtensions = ['jpg', 'jpeg', 'png'],
   }) {
 
@@ -23,7 +24,7 @@ export class UploadService {
         .badRequest(`Extensión inválida: ${fileExtension}, extensiones válidas: ${validExtensions.join(', ')}`);
     }
 
-    const response = await this.cloudinaryService.uploadImage({file});
+    const response = await this.cloudinaryService.uploadImage({file, change_bg});
 
     return await this.postImagesService.insertPostImage(response);
   }
