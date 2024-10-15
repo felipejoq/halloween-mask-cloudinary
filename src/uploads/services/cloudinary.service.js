@@ -27,8 +27,6 @@ export class CloudinaryService {
   getMaskImages({public_id, change_bg}) {
     return masks.map(mask => {
 
-      const changeBgPrompt = `gen_background_replace:prompt_an ${halloweenPrompts[Math.floor(Math.random() * halloweenPrompts.length)]}`;
-
       const config = {
         transformation: [
           {overlay: mask.public_id},
@@ -39,7 +37,7 @@ export class CloudinaryService {
       }
 
       if (change_bg) {
-        config.effect = changeBgPrompt;
+        config.effect = `gen_background_replace:prompt_an ${halloweenPrompts[Math.floor(Math.random() * halloweenPrompts.length)]}`;
       }
 
       const faceImg = cloudinary.image(public_id, config);
