@@ -1,6 +1,6 @@
 import {v2 as cloudinary} from 'cloudinary';
 import {envsPlugin} from "../../config/plugins/envs.plugin.js";
-import {masks} from "../utils/mask.array.js";
+import {masks as MasksArray} from "../utils/mask.array.js";
 
 const halloweenPrompts = [
   "add a background with a zombie invasion",
@@ -24,8 +24,25 @@ export class CloudinaryService {
     });
   }
 
-  getMaskImages({public_id, change_bg}) {
-    return masks.map(mask => {
+  getMaskImages({public_id, change_bg, masks}) {
+
+    // Check if masks is an array or a single mask
+    let masks_selected = [];
+    if (Array.isArray(masks)) {
+      masks_selected = [...masks];
+    } else {
+      masks_selected.push(masks);
+    }
+
+    // Filter masks
+    let masksGen = MasksArray.filter(mask => masks_selected.includes(mask.public_id));
+
+    // If no masks are selected, use all masks
+    if (masksGen.length === 0) {
+      masksGen = MasksArray;
+    }
+
+    return masksGen.map(mask => {
 
       const changeBackgroundPrompt = `gen_background_replace:prompt_an ${halloweenPrompts[Math.floor(Math.random() * halloweenPrompts.length)]}`;
 
@@ -47,7 +64,7 @@ export class CloudinaryService {
     });
   }
 
-  async uploadImage({file, change_bg}) {
+  async uploadImage({file, change_bg, masks}) {
     const {secure_url, public_id} = await cloudinary.uploader.upload(file.tempFilePath, {
       folder: 'halloween-hackathon',
     });
@@ -55,7 +72,7 @@ export class CloudinaryService {
     return {
       secure_url,
       public_id,
-      face_masks: this.getMaskImages({public_id, change_bg}),
+      face_masks: this.getMaskImages({public_id, change_bg, masks}),
     }
   }
 }

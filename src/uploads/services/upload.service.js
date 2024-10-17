@@ -8,12 +8,13 @@ export class UploadService {
   }
 
   async uploadImage({
-    file,
-    change_bg = false,
-    validExtensions = ['jpg', 'jpeg', 'png'],
-  }) {
+                      file,
+                      change_bg = false,
+                      masks = [],
+                      validExtensions = ['jpg', 'jpeg', 'png'],
+                    }) {
 
-    if(!file) {
+    if (!file) {
       return CustomError.badRequest('No se ha enviado ningún archivo');
     }
 
@@ -24,7 +25,7 @@ export class UploadService {
         .badRequest(`Extensión inválida: ${fileExtension}, extensiones válidas: ${validExtensions.join(', ')}`);
     }
 
-    const response = await this.cloudinaryService.uploadImage({file, change_bg});
+    const response = await this.cloudinaryService.uploadImage({file, change_bg, masks});
 
     return await this.postImagesService.insertPostImage(response);
   }
