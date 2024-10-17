@@ -21,11 +21,12 @@ export class Server {
 
     // File upload middleware configuration
     this.app.use(fileUpload({
-      limits: { fileSize: 2 * 1024 * 1024 },
+      limits: { fileSize: 5 * 1024 * 1024 },
       abortOnLimit: true,
       useTempFiles: true,
-      tempFileDir: '/tmp/',
-      responseOnLimit: `El archivo excede el tamaño permitido 2MB bytes`
+      tempFileDir: 'src/temp/',
+      responseOnLimit: `El archivo excede el tamaño permitido 5MB bytes`,
+      logger: true,
     }))
 
     // * Public folders
