@@ -5,7 +5,6 @@ import {AuthMiddleware} from "../../middlewares/auth.middleware.js";
 import {FilesMiddleware} from "../../middlewares/files.middleware.js";
 import {CloudinaryService} from "../services/cloudinary.service.js";
 import {PostImagesService} from "../../posts/services/post.images.service.js";
-import {ProcessImagesService} from "../services/process.images.service.js";
 
 export class UploadRouter {
   static get routes() {
@@ -13,8 +12,7 @@ export class UploadRouter {
     const uploadRouter = Router();
     const cloudinaryService = new CloudinaryService();
     const postImagesService = new PostImagesService();
-    const processImagesService = new ProcessImagesService();
-    const uploadService = new UploadService(cloudinaryService, postImagesService, processImagesService);
+    const uploadService = new UploadService(cloudinaryService, postImagesService);
     const uploadController = new UploadController(uploadService);
 
     const {validateJWT} = AuthMiddleware;
