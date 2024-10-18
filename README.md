@@ -43,7 +43,9 @@ Content-Type: application/json
 
 Request de ejemplo:
 ```http request
-### enviar un form con un input de tipo file con el nombre "file" en el body
+### enviar un FormData con los siguientes inputs:
+### input: tipo file y nombre file
+### checkbox: tipo booleano y nombre change_bg
 POST https://examples.http-client.intellij.net/post
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 ```
