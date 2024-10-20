@@ -25,7 +25,10 @@ export class CloudinaryService {
   }
 
   getMaskImages({public_id, change_bg}) {
-    return masks.map(mask => {
+    // take 2 random masks
+    const randomMasks = masks.sort(() => Math.random() - Math.random()).slice(0, 2);
+
+    return randomMasks.map(mask => {
 
       const changeBackgroundPrompt = `gen_background_replace:prompt_an ${halloweenPrompts[Math.floor(Math.random() * halloweenPrompts.length)]}`;
 
