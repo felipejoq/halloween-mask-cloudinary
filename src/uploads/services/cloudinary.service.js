@@ -1,19 +1,7 @@
 import {v2 as cloudinary} from 'cloudinary';
 import {envsPlugin} from "../../config/plugins/envs.plugin.js";
 import {masks} from "../utils/mask.array.js";
-
-const halloweenPrompts = [
-  "add a background with a zombie invasion",
-  "change the background to a haunted forest",
-  "replace the background with a dark and eerie graveyard",
-  "set the background to a city destroyed by monsters",
-  "transform the background into a haunted house full of ghosts",
-  "change the background to a swamp with terrifying creatures",
-  "add a background of an abandoned and cursed mansion",
-  "replace the background with a giant pumpkin apocalypse",
-  "set the background to a full moon over a spooky landscape",
-  "change the background to a gothic castle surrounded by fog"
-];
+import {halloweenPrompts} from "../utils/halloween.prompts.js";
 
 export class CloudinaryService {
   constructor() {
@@ -25,10 +13,10 @@ export class CloudinaryService {
   }
 
   getMaskImages({public_id, change_bg}) {
-    // take 2 random masks
-    const randomMasks = masks.sort(() => Math.random() - Math.random()).slice(0, 2);
+    // take 2 random masks for optimization purposes
+    // const randomMasks = masks.sort(() => Math.random() - Math.random()).slice(0, 2);
 
-    return randomMasks.map(mask => {
+    return masks.map(mask => {
 
       const changeBackgroundPrompt = `gen_background_replace:prompt_an ${halloweenPrompts[Math.floor(Math.random() * halloweenPrompts.length)]}`;
 
